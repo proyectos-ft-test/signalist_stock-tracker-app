@@ -2,6 +2,13 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
+console.log(
+    'MongoDB URI:',
+    MONGODB_URI
+        ? MONGODB_URI.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')
+        : 'UNDEFINED'
+);
+
 declare global {
     var mongooseCache: { 
         conn: typeof mongoose | null;
@@ -28,5 +35,6 @@ export const connectToDatabase = async () => {
         throw err;
     }
 
-    console.log(`Connecting to Database ${process.env.NODE_ENV} ${MONGODB_URI}`);
+
+    return cached.conn
 }
