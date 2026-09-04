@@ -1,9 +1,17 @@
+export const runtime = 'nodejs';
+import { auth } from '@/lib/better-auth/auth';
+import { headers } from 'next/headers';
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation';
 import React from 'react'
 
-const Layout = ({ children } : { children : React.ReactNode}) => {
-  return (
+const Layout = async ({ children } : { children : React.ReactNode}) => {
+    const session = await auth.api.getSession({ headers: await headers()})
+
+    if(session?.user) redirect('/')
+
+    return (
     <main className='auth-layout'>
         <section className='auth-left-section scrollbar-hide-default border-5 border-blue-500'>
             <Link href="/" className="auth-logo border-4 border-red-500"> 
